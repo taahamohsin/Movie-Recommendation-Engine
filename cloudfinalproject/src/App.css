@@ -1,6 +1,12 @@
+ html, body, #root{
+  height:100%;
+}
+
+
 .App {
   text-align: center;
 }
+
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
@@ -25,4 +31,16 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+
+
+#landingDiv{
+  text-align: center;
+  font-family: Baskerville;
+  font-size:50px;
+  color:white;
+  height:100%;
+  border:1px solid red;
+  background-color:black;
 }
