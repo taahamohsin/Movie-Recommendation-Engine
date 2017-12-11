@@ -2269,10 +2269,6 @@ Link.contextTypes = {
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -2307,40 +2303,98 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var App = function (_Component) {
-  _inherits(App, _Component);
+var Main = function (_Component) {
+    _inherits(Main, _Component);
 
-  function App() {
-    _classCallCheck(this, App);
+    function Main(props) {
+        _classCallCheck(this, Main);
 
-    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
-  }
+        var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 
-  _createClass(App, [{
-    key: 'render',
-    value: function render() {
-
-      return _react2.default.createElement(
-        _reactRouterDom.BrowserRouter,
-        null,
-        _react2.default.createElement(
-          _MuiThemeProvider2.default,
-          null,
-          _react2.default.createElement(_Header2.default, null),
-          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Landing2.default }),
-          _react2.default.createElement(_reactRouterDom.Route, { path: '/login', render: function render() {
-              return _react2.default.createElement(_Login2.default, null);
-            }
-          })
-        )
-      );
+        _this.user = new User(window.__PRELOADED_STATE__.username, window.__PRELOADED_STATE__.primary_email);
+        return _this;
     }
-  }]);
 
-  return App;
+    _createClass(Main, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                _reactRouterDom.BrowserRouter,
+                null,
+                _react2.default.createElement(
+                    _MuiThemeProvider2.default,
+                    null,
+                    _react2.default.createElement(_Header2.default, null),
+                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Landing2.default }),
+                    _react2.default.createElement(_reactRouterDom.Route, { path: '/login', render: function render() {
+                            return _react2.default.createElement(_Login2.default, null);
+                        }
+                    })
+                )
+            );
+        }
+    }]);
+
+    return Main;
 }(_react.Component);
 
-exports.default = App;
+var User = function () {
+    function User(username, primary_email) {
+        _classCallCheck(this, User);
+
+        if (username && primary_email) {
+            this.data = {
+                username: username,
+                primary_email: primary_email
+            };
+        } else {
+            this.data = {
+                username: "",
+                primary_email: ""
+            };
+        }
+    }
+
+    _createClass(User, [{
+        key: 'loggedIn',
+        value: function loggedIn() {
+            return this.data.username && this.data.primary_email;
+        }
+    }, {
+        key: 'username',
+        value: function username() {
+            return this.data.username;
+        }
+    }, {
+        key: 'logIn',
+        value: function logIn(router, data) {
+            // Store locally
+            this.data = data;
+            // Go to user profile
+            router.push('/profile/' + data.username);
+        }
+    }, {
+        key: 'logOut',
+        value: function logOut(router) {
+            // Remove user info
+            this.data = {
+                username: "",
+                primary_email: ""
+            };
+            // Go to login page
+            router.push('/login');
+        }
+    }, {
+        key: 'getUser',
+        value: function getUser() {
+            return this.data;
+        }
+    }]);
+
+    return User;
+}();
+
+render(_react2.default.createElement(Main, null), document.getElementById('mainDiv'));
 
 /***/ }),
 /* 111 */,

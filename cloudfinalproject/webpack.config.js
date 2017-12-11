@@ -7,7 +7,7 @@ module.exports = {
     devtool: "source-map",
     context: path.join(__dirname, "/src/Client"),
     entry: {
-        main: "./App.js",
+        main: "./main.js",
         vendor: ["jquery", "react", "react-dom", "react-router"]
     },
     output: {

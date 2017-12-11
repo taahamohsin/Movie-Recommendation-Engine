@@ -9,7 +9,7 @@ mongoose.Promise = global.Promise;
 let port = process.env.PORT ? process.env.PORT : 8080;
 let env = process.env.NODE_ENV ? process.env.NODE_ENV : 'dev';
 let app = express();
-app.use(express.static(path.join(__dirname, '../../public')));
+// app.use(express.static(path.join(__dirname, '../../public')));
 if (env !== 'test') app.use(logger('dev'));
 app.engine('pug', require('pug').__express);
 app.set('views', __dirname);
@@ -67,3 +67,5 @@ mongoose.connect('mongodb://group5:password@ds129946.mlab.com:29946/assignment6'
 let server = app.listen(port, () => {
     console.log('Cloud app listening on ' + server.address().port);
 });
+
+
