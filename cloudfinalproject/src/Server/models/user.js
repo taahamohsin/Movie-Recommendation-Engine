@@ -1,9 +1,11 @@
-/**
- * Created by Edwin on 12/10/2017.
- */
+/* Copyright G. Hemingway @2017 - All rights reserved */
+"use strict";
+
 let crypto              = require('crypto'),
     mongoose            = require('mongoose'),
     Schema              = mongoose.Schema;
+
+/***************** User Model *******************/
 
 const makeSalt = () => (
     Math.round((new Date().valueOf() * Math.random())) + ''
@@ -23,18 +25,30 @@ let User = new Schema({
     'city':         { type: String, default: '' },
     'hash':         { type: String, required: true },
     'salt':         { type: String, required: true },
-    'profile':      { type: Schema.Types.ObjectId, ref: 'MoveList' }
+    'games': [
+        { type: Schema.Types.ObjectId, ref: 'Game' }
+    ]
 });
+
+User.path('username').validate(function(value) {
+    if (!value) return false;
+    if (reservedNames.indexOf(value) !== -1) return false;
+    return (value.length > 5 && value.length <= 16 && /^[a-zA-Z0-9]+$/i.test(value));
+}, 'invalid username');
+
 User.path('primary_email').validate(function(value) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }, 'malformed address');
+
 User.virtual('password').set(function(password) {
     this.salt = makeSalt();
     this.hash = encryptPassword(this.salt, password);
 });
+
 User.method('authenticate', function(plainText) {
     return encryptPassword(this.salt, plainText) === this.hash;
 });
+
 User.pre('save', function(next) {
     // Sanitize strings
     this.username       = this.username.toLowerCase();
@@ -44,4 +58,7 @@ User.pre('save', function(next) {
     this.city           = this.city.replace(/<(?:.|\n)*?>/gm, '');
     next();
 });
+
+/***************** Registration *******************/
+
 module.exports = mongoose.model('User', User);

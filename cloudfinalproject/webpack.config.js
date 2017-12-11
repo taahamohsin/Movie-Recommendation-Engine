@@ -5,9 +5,9 @@ let path =      require("path"),
 module.exports = {
     cache: true,
     devtool: "source-map",
-    context: path.join(__dirname, "/src/Client"),
+    context: path.join(__dirname, "/src/client"),
     entry: {
-        main: "./main.js",
+        main: "./main",
         vendor: ["jquery", "react", "react-dom", "react-router"]
     },
     output: {

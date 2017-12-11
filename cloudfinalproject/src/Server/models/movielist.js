@@ -53,4 +53,3 @@ MovieList.pre('validate', function(next) {
 /***************** Registration *******************/
 
 module.exports = mongoose.model('MovieList', MovieList);
-

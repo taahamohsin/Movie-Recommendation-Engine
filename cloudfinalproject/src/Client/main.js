@@ -1,14 +1,23 @@
-import React, { Component } from 'react';
-import Landing from './Components/Landing.js';
-import Login from './Components/Login.js';
-import Header from './Components/Header.js'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { BrowserRouter, Route } from 'react-router-dom';
-import './App.css';
+/* Copyright G. Hemingway, 2017 - All rights reserved */
+"use strict";
 
-class Main extends Component{
+// Necessary modules
+import React, { Component }     from 'react';
+import { render }               from 'react-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import Header                   from './components/header';
+import Landing                  from './components/landing';
+import Login                    from './components/login';
+import Logout                   from './components/logout';
+import Register                 from './components/register';
+import Profile                  from './components/profile';
+import *  as styles             from './app.css';
+// Bring app CSS into the picture
 
- constructor(props) {
+/*************************************************************************/
+
+class MyApp extends Component {
+    constructor(props) {
         super(props);
         this.user = new User(
             window.__PRELOADED_STATE__.username,
@@ -16,23 +25,41 @@ class Main extends Component{
         );
     }
 
-render(){
-    return (
-        <BrowserRouter>
-            <MuiThemeProvider>
-            <Header/>
-            <Route exact path="/" component={Landing}/>
-            <Route path="/login" render={() => 
-            <Login/>
-            }
-            />
-            </MuiThemeProvider>
-        </BrowserRouter>
+    render() {
+        document.body.style.backgroundColor="#1F1B3F";
+        return <BrowserRouter>
+            <div style={styles.theme}>
+                <Header user={this.user}/>
+                <Route exact path="/" component={Landing}/>
+                <Route path="/login" render={() => {
+                    return this.user.loggedIn() ?
+                        <Redirect to={`/profile/${this.user.username()}`}/> :
+                        <Login user={this.user}/>
+                }}/>
+                <Route path="/register" render={() => {
+                    return this.user.loggedIn() ?
+                        <Redirect to={`/profile/${this.user.username()}`}/> :
+                        <Register/>;
+                }}/>
+                <Route path="/logout" render={props => <Logout user={this.user}/>}/>
+                <Route path="/profile/:username" render={props => <Profile user={this.user}/>}/>
+                <Route path="/start" render={() => {
+                    return this.user.loggedIn() ?
+                        <Start/> :
+                        <Redirect to={'/login'}/>;
+                }}/>
+                <Route path="/game/:id" render={() => {
+                    return this.user.loggedIn() ?
+                        <Game user={this.user}/> :
+                        <Redirect to={'/login'}/>;
+                }}/>
+                <Route path="/results/:id" render={props => <Results user={this.user}/>}/>
+                <Route path="/authcallback" render={()=><AuthHandler/>}/>
+            </div>
+        </BrowserRouter>;
 
-        );
     }
 }
-
 
 class User {
     constructor(username, primary_email) {
@@ -82,6 +109,6 @@ class User {
 }
 
 render(
-    <Main/>,
+    <MyApp/>,
     document.getElementById('mainDiv')
 );

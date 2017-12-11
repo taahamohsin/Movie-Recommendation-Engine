@@ -1,47 +1,55 @@
-import React, {Component} from 'react'
-import Toolbar, {ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar'
-import FlatButton from 'material-ui/FlatButton'
+/* Copyright G. Hemingway, 2017 - All rights reserved */
+'use strict';
 
-export default class Header extends Component{
-    
-    render(){
-         const toolBarStyles={
-            'fontFamily':'Baskerville',
-            'fontSize':'20 px',
-            'color':'white',
-            'backgroundColor':"#4C080E",
-            'textAlign':'center',
 
-        };
+import React, { Component }     from 'react';
+import { Link, withRouter }  from 'react-router-dom';
+import md5                      from 'md5';
+import * as styles from '../app.css'
+/*************************************************************************/
 
-       const rightGroupStyle={
-            'clear':'left'
-       }
-       
-       const buttonStyle={
-           'backgroundColor':'#726F0B',
-           'textAlign':'center',
-           'fontFamily':'Baskerville'
-       }    
+export function GravHash(email, size) {
+    let hash = email.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    hash = hash.toLowerCase();
+    hash = md5(hash);
+    return `https://www.gravatar.com/avatar/${hash}?size=${size}`;
+}
+  let h2style={
+        color: 'white',
+        fontFamily:'Baskerville',
+        fontWeight:500
+        }
 
-          return(
-            <Toolbar style={toolBarStyles}>
-                {/*This is onyl here to keep the login and register on the right side temporarily*/}
-                <ToolbarGroup></ToolbarGroup>
-                {/*//TODO: Display only if the user is logged in
-                {/*<ToolbarGroup>
-                    <FlatButton label="Login" href="/login" style={buttonStyle}/>                        
-                </ToolbarGroup>*/}
-                {window.location.href.indexOf("/login")==-1?
-                <ToolbarGroup style={rightGroupStyle}>
-                    <FlatButton label="Login" href="/login" style={buttonStyle}/>
-                    <FlatButton label="Register" href="/register" style={buttonStyle}/>
-                </ToolbarGroup>:
-                <ToolbarGroup style={rightGroupStyle}>
-                    <FlatButton label="Register" href="/register" style={buttonStyle}/>
-                </ToolbarGroup>
-           }
-          </Toolbar>
-        )
+class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
+
+    onClick() {
+        const { username } = this.props.user.getUser();
+        this.props.history.push(`/profile/${username}`);
+    }
+
+  
+    render() {
+        const user = this.props.user.getUser();
+        const right = user.username !== '' ?
+            <div className="header">
+                <Link to="/logout">Log Out</Link>
+                <img src={GravHash(user.primary_email, 40)} onClick={this.onClick}/>
+            </div>:
+            <div className="col-xs-4 right-nav">
+                <Link to="/login" style={h2style}>Log In</Link>
+                <Link to="/register" style={h2style}>Register</Link>
+            </div>;
+        return <nav className="navbar navbar-default navbar-static-top navbar-inverse">
+            <div className="col-xs-8">
+                <h2 style={h2style}>Movie Recommendation Engine</h2>
+            </div>
+            {right}
+        </nav>
     }
 }
+
+export default withRouter(Header);

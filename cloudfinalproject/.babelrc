@@ -1,6 +1,6 @@
 {
-  "presets": ["es2015", "env", "react"],
-  "plugins":["transform-react-jsx"],
+  "presets": ["es2015", "env", "react", "stage-0"],
+  "plugins":["transform-react-jsx", "transform-object-rest-spread", "transform-react-jsx"],
   "parserOpts": {
     "plugins": ["jsx", "flow"]
   }
