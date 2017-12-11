@@ -23,7 +23,7 @@ let User = new Schema({
     'city':         { type: String, default: '' },
     'hash':         { type: String, required: true },
     'salt':         { type: String, required: true },
-    'profile':      { type: Schema.Types.ObjectId, ref: 'Game' }
+    'profile':      { type: Schema.Types.ObjectId, ref: 'MoveList' }
 });
 User.path('primary_email').validate(function(value) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);

@@ -1,9 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import '../Client/index.css';
-import App from './Client/App';
-import registerServiceWorker from './registerServiceWorker';
-
 let path            = require('path'),
     express         = require('express'),
     bodyParser      = require('body-parser'),
@@ -39,35 +33,37 @@ app.use(bodyParser.urlencoded({ extended: true }));
 let options = {
     useMongoClient: true
 };
-mongoose.connect('mongodb://192.168.99.100:32770/geee', options)
+mongoose.connect('mongodb://group5:password@ds129946.mlab.com:29946/assignment6', options)
     .then(() => {
         console.log('\t MongoDB connected');
 
         // Import our Data Models
         app.models = {
-            Game: require('./models/game'),
+            MovieList: require('./models/movielist'),
             User: require('./models/user')
         };
 
-        // Import our API Routes
-        require('./api/v1/game')(app);
-        require('./api/v1/user')(app);
-        require('./api/v1/session')(app);
+        // Import our API Routes 
+        //TODO: add API routes when developed
+        // require('./api/v1/game')(app);
+        // require('./api/v1/user')(app);
+        // require('./api/v1/session')(app);
 
         // Give them the SPA base page
-        app.get('*', (req, res) => {
-            let preloadedState = req.session.user ? {
-                username: req.session.user.username,
-                primary_email: req.session.user.primary_email
-            } : {};
-            preloadedState = JSON.stringify(preloadedState).replace(/</g, '\\u003c');
-            res.render('base.pug', {
-                state: preloadedState
-            });
-        });
+        // app.get('*', (req, res) => {
+        //     let preloadedState = req.session.user ? {
+        //         username: req.session.user.username,
+        //         primary_email: req.session.user.primary_email
+        //     } : {};
+        //     preloadedState = JSON.stringify(preloadedState).replace(/</g, '\\u003c');
+        //     res.render('base.pug', {
+        //         state: preloadedState
+        //     });
+        // });
     }, err => {
         console.log(err);
     });
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+let server = app.listen(port, () => {
+    console.log('Cloud app listening on ' + server.address().port);
+});
