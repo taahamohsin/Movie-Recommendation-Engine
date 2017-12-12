@@ -12,9 +12,14 @@ let path            = require('path'),
 mongoose.Promise = global.Promise;
 let port = process.env.PORT ? process.env.PORT : 8080;
 let env = process.env.NODE_ENV ? process.env.NODE_ENV : 'dev';
-
+let client=redis.createClient('6379', '18.218.10.212');
 /**********************************************************************************************************/
-
+client.on('ready',() => {
+    console.log('\tRedis Connected.');
+}).on('error', (err) => {
+    console.log('Not able to connect to Redis.');
+    process.exit(-1);
+});
 // Setup our Express pipeline
 let app = express();
 app.use(express.static(path.join(__dirname, '../../public')));
@@ -22,8 +27,13 @@ if (env !== 'test') app.use(logger('dev'));
 app.engine('pug', require('pug').__express);
 app.set('views', __dirname);
 // Setup pipeline session support
+const redisOptions = {
+    host: '18.218.10.212',
+    port: '6379'
+};
 app.use(session({
     name: 'session',
+    store: new RedisStore(redisOptions),
     secret: 'ohhellyes',
     resave: false,
     saveUninitialized: true,
