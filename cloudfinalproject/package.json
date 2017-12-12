@@ -4,6 +4,7 @@
   "description": "Assignment 6",
   "main": "/src/server/index.js",
   "dependencies": {
+    "axios": "^0.17.1",
     "body-parser": "^1.16.0",
     "bootstrap": "^3.3.7",
     "connect-redis": "^3.3.2",

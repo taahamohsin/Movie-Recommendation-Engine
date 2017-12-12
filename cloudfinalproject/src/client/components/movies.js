@@ -25,9 +25,7 @@ class Movies extends Component{
         }
         this.onSubmit=  this.onSubmit.bind(this);
         this.onAdd  =   this.onAdd.bind(this);
-    }
-
-    
+    }    
 
     onSubmit(event){
         event.preventDefault();
@@ -37,7 +35,7 @@ class Movies extends Component{
             url:`/v1/movie/${query}`
         }).then(
             (res)=>{
-                // console.log(JSON.stringify(res));
+                console.log(JSON.stringify(res));
             }
         ).fail(
             err=>{
@@ -48,6 +46,7 @@ class Movies extends Component{
 
     onAdd(event){
         event.preventDefault();
+        // add to this.state.movies and trigger a re-render
     }
 
     render(){

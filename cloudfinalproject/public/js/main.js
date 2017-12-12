@@ -3261,7 +3261,7 @@ var Movies = function (_Component) {
                 method: 'GET',
                 url: '/v1/movie/' + query
             }).then(function (res) {
-                // console.log(JSON.stringify(res));
+                console.log(JSON.stringify(res));
             }).fail(function (err) {
                 console.log(JSON.stringify(err));
             });
@@ -3270,6 +3270,7 @@ var Movies = function (_Component) {
         key: 'onAdd',
         value: function onAdd(event) {
             event.preventDefault();
+            // add to this.state.movies and trigger a re-render
         }
     }, {
         key: 'render',

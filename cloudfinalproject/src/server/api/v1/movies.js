@@ -10,15 +10,17 @@ module.exports = (app) => {
         // console.log(JSON.stringify(req.params))
         let prefix='https://api.themoviedb.org/3/'
         let url=prefix+'search/movie/?api_key='+api_key+"&query="+req.params.title;
-        axios.get(url).then(function(res){
+        axios.get(url).then(
+            function(res){
             secondURL=prefix+'movie/'+res.data.results[0].id+"?api_key="+api_key;
             console.log(secondURL)
         }
         ).then(()=>{
             axios.get(secondURL).then(
-                function(res){
-                    console.log(res.data.adult)
+                function(response){
+                    res.status(200).send({data:response.data});
                 }
+                
             )
         })
 
