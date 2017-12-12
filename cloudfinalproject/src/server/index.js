@@ -42,7 +42,7 @@ let options = {
     useMongoClient: true
 };
 
-mongoose.connect(process.env.MONGOLAB_URI, options)
+mongoose.connect("mongodb://group5:password@ds129946.mlab.com:29946/assignment6", options)
     .then(() => {
         // Import our Data Models
         app.models = {
