@@ -31,15 +31,10 @@ class Movies extends Component{
 
     onSubmit(event){
         event.preventDefault();
-        let data={
-           query:document.getElementById('title').value
-            // add data from the form here
-        };
-        console.log(data)
+        let query=document.getElementById('title').value
         $.ajax({
             method:'GET',
-            url:'/v1/movie',
-            data:data
+            url:`/v1/movie/${query}`
         }).then(
             (res)=>{
                 // console.log(JSON.stringify(res));

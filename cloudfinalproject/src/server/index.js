@@ -1,4 +1,3 @@
-/* Copyright G. Hemingway, @2017 */
 'use strict';
 
 let path            = require('path'),
@@ -42,7 +41,7 @@ let options = {
     useMongoClient: true
 };
 
-mongoose.connect(process.env.MONGOLAB_URI, options)
+mongoose.connect("mongodb://13.58.73.141:27017/cloud", options)
     .then(() => {
         // Import our Data Models
         app.models = {
@@ -53,6 +52,7 @@ mongoose.connect(process.env.MONGOLAB_URI, options)
         // Import our API Routes
         require('./api/v1/user')(app),
         require('./api/v1/session')(app)
+        require('./api/v1/movies')(app)
         //TODO: add api routes for movielist
 
         // Give them the SPA base page

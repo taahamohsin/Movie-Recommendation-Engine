@@ -189,7 +189,6 @@ Link.contextTypes = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* Copyright G. Hemingway, 2017 - All rights reserved */
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -353,8 +352,7 @@ module.exports = charenc;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* Copyright G. Hemingway, 2017 - All rights reserved */
-
+/* WEBPACK VAR INJECTION */(function($) {
 
 // Necessary modules
 
@@ -2332,7 +2330,6 @@ module.exports = function (css) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* Copyright G. Hemingway, 2017 - All rights reserved */
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2373,8 +2370,7 @@ exports.default = Landing;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* Copyright G. Hemingway, 2017 - All rights reserved */
-
+/* WEBPACK VAR INJECTION */(function($) {
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -2519,7 +2515,6 @@ exports.default = (0, _reactRouterDom.withRouter)(Login);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* Copyright G. Hemingway, 2017 - All rights reserved */
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -2799,8 +2794,7 @@ exports.default = (0, _reactRouter.withRouter)(Register);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* Copyright G. Hemingway, 2017 - All rights reserved */
-
+/* WEBPACK VAR INJECTION */(function($) {
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -3254,15 +3248,10 @@ var Movies = function (_Component) {
         key: 'onSubmit',
         value: function onSubmit(event) {
             event.preventDefault();
-            var data = {
-                query: document.getElementById('title').value
-                // add data from the form here
-            };
-            console.log(data);
+            var query = document.getElementById('title').value;
             $.ajax({
                 method: 'GET',
-                url: '/v1/movie',
-                data: data
+                url: '/v1/movie/' + query
             }).then(function (res) {
                 // console.log(JSON.stringify(res));
             }).fail(function (err) {
