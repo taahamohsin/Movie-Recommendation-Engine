@@ -4,9 +4,11 @@ let path            = require('path'),
     express         = require('express'),
     bodyParser      = require('body-parser'),
     logger          = require('morgan'),
+    redis           = require('redis'),
     session         = require('express-session'),
     mongoose        = require('mongoose'),
-    dotenv          = require('dotenv');
+    dotenv          = require('dotenv'),
+    RedisStore      = require('connect-redis')(session);
 
 mongoose.Promise = global.Promise;
 let port = process.env.PORT ? process.env.PORT : 8080;
