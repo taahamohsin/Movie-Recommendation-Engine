@@ -524,7 +524,7 @@ var User = function () {
 }();
 
 (0, _reactDom.render)(_react2.default.createElement(MyApp, null), document.getElementById('mainDiv'));
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
 
 /***/ }),
 
@@ -2507,7 +2507,7 @@ var Login = function (_Component) {
 }(_react.Component);
 
 exports.default = (0, _reactRouterDom.withRouter)(Login);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
 
 /***/ }),
 
@@ -2515,7 +2515,7 @@ exports.default = (0, _reactRouterDom.withRouter)(Login);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function($) {
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -2552,7 +2552,14 @@ var Logout = exports.Logout = function (_Component) {
     _createClass(Logout, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
-            this.props.user.logOut(this.props.history);
+            var _this2 = this;
+
+            $.ajax({
+                url: '/v1/session',
+                method: "delete"
+            }).then(function () {
+                return _this2.props.user.logOut(_this2.props.history);
+            });
         }
     }, {
         key: 'render',
@@ -2565,6 +2572,7 @@ var Logout = exports.Logout = function (_Component) {
 }(_react.Component);
 
 exports.default = (0, _reactRouterDom.withRouter)(Logout);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
 
 /***/ }),
 
@@ -2786,7 +2794,7 @@ var Register = function (_Component) {
 }(_react.Component);
 
 exports.default = (0, _reactRouter.withRouter)(Register);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
 
 /***/ }),
 
@@ -3184,7 +3192,7 @@ var Profile = function (_Component) {
 }(_react.Component);
 
 exports.default = (0, _reactRouterDom.withRouter)(Profile);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
 
 /***/ }),
 
@@ -3346,7 +3354,7 @@ var Movies = function (_Component) {
 }(_react.Component);
 
 exports.default = (0, _reactRouterDom.withRouter)(Movies);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)))
 
 /***/ }),
 
