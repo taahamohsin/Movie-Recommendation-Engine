@@ -51,7 +51,8 @@ mongoose.connect(process.env.MONGOLAB_URI, options)
         };
 
         // Import our API Routes
-        require('./api/v1/user')(app);
+        require('./api/v1/user')(app),
+        require('./api/v1/session')(app)
         //TODO: add api routes for movielist
 
         // Give them the SPA base page

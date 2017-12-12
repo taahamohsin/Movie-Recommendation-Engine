@@ -11,6 +11,7 @@ import Login                    from './components/login';
 import Logout                   from './components/logout';
 import Register                 from './components/register';
 import Profile                  from './components/profile';
+import Movies                   from './components/movies';
 import *  as styles             from './app.css';
 // Bring app CSS into the picture
 
@@ -28,7 +29,7 @@ class MyApp extends Component {
     render() {
         document.body.style.backgroundColor="#1F1B3F";
         return <BrowserRouter>
-            <div style={styles.theme}>
+            <div>
                 <Header user={this.user}/>
                 <Route exact path="/" component={Landing}/>
                 <Route path="/login" render={() => {
@@ -43,18 +44,7 @@ class MyApp extends Component {
                 }}/>
                 <Route path="/logout" render={props => <Logout user={this.user}/>}/>
                 <Route path="/profile/:username" render={props => <Profile user={this.user}/>}/>
-                <Route path="/start" render={() => {
-                    return this.user.loggedIn() ?
-                        <Start/> :
-                        <Redirect to={'/login'}/>;
-                }}/>
-                <Route path="/game/:id" render={() => {
-                    return this.user.loggedIn() ?
-                        <Game user={this.user}/> :
-                        <Redirect to={'/login'}/>;
-                }}/>
-                <Route path="/results/:id" render={props => <Results user={this.user}/>}/>
-                <Route path="/authcallback" render={()=><AuthHandler/>}/>
+                <Route path="/movies" render={props=><Movies/>}/>
             </div>
         </BrowserRouter>;
 
@@ -99,6 +89,14 @@ class User {
             username: "",
             primary_email: ""
         };
+        $.ajax({
+            method:'delete',
+            url:'/v1/session'
+        }).then(
+            ()=>{
+                console.log("All done")
+            }
+        )
         // Go to login page
         router.push('/login');
     }

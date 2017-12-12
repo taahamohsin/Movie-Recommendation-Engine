@@ -7,7 +7,15 @@ import { GravHash }                     from './header';
 import '../app.css'
 /*************************************************************************/
 
-const Game = ({ game, index }) => {
+const divStyle={
+    color:'LightGray'
+}
+
+const tableStyle={
+    color:'LightGray'
+}
+
+/*const Game = ({ game, index }) => {
     let date = new Date(game.start);
     const url = game.active ? `/game/${game.id}` : `/results/${game.id}`;
     return <tr key={index}>
@@ -17,7 +25,7 @@ const Game = ({ game, index }) => {
         <th>{game.score}</th>
         <th>{game.game}</th>
     </tr>;
-};
+};*/
 
 class Profile extends Component {
     constructor(props) {
@@ -107,13 +115,12 @@ class Profile extends Component {
     }
 
     render() {
+        console.log(this.state)
         // Is the logged in user viewing their own profile
         const isUser = this.props.match.params.username === this.props.user.getUser().username;
         // Build array of games
-        let games = this.state.user.games.map((game, index) => (
-            <Game key={index} game={game} index={index}/>
-        ));
-        return <div className="row">
+       
+        return <div className="row" style={divStyle}>
             <div className="center-block">
                 <p id="errorMsg" className="bg-danger"/>
             </div>
@@ -178,21 +185,18 @@ class Profile extends Component {
                     }
                 </div>
                 <div className="row">
-                    <div className="col-xs-12">
-                        <h4 id="games_count">Games Played ({this.state.user.games.length}):</h4>
-                        { isUser ? <Link to="/start">Start new game</Link> : undefined }
+                    <div className="col-xs-12">                        
+                        { isUser ? <Link to="/movies">Look for movies</Link> : undefined }
+                        <h4 id="games_count">10 movie recommendations for you</h4>
                     </div>
-                    <table id="gameTable" className="col-xs-12 table">
+                    <table id="gameTable" className="col-xs-12 table" style={tableStyle}>
                         <thead>
                         <tr>
-                            <th>Status</th>
-                            <th>Start Date</th>
-                            <th># of moves</th>
+                            <th>Title</th>
                             <th>Score</th>
-                            <th>Game Type</th>
                         </tr>
                         </thead>
-                        <tbody>{games}</tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>

@@ -6,13 +6,17 @@ import React, { Component }     from 'react';
 import { withRouter }           from 'react-router';
 
 /*************************************************************************/
+const buttonStyle={
+    backgroundColor:'#8B7D20',
+    border: '1px solid #8B7D20'
+}
 
 class Register extends Component {
     constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
     }
-
+    
     static validPassword(password) {
         if (!password || password.length < 8) {
             return { error: 'password length must be > 7' };
@@ -108,7 +112,7 @@ class Register extends Component {
                     </div>
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-10">
-                            <button onClick={this.onSubmit} className="btn btn-default">Register</button>
+                            <button onClick={this.onSubmit} className="btn btn-default" style={buttonStyle}>Register</button>
                         </div>
                     </div>
                 </form>

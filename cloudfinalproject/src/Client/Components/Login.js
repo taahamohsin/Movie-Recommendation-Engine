@@ -3,11 +3,11 @@
 
 
 import React, { Component}     from 'react';
-import { Redirect, withRouter }           from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 /*************************************************************************/
 
 const labelStyle={
-    color:'grey'
+    color:'LightGray'
 }
 
 const buttonStyle={
@@ -35,13 +35,13 @@ class Login extends Component {
             this.props.user.logIn(this.props.history, data);
         })
         .fail(err => {
-            let errorEl = document.getElementById('errorMsg');
-            errorEl.innerHTML = `Error: ${err.responseJSON.error}`;
+            console.log(JSON.stringify(err))
+            // let errorEl = document.getElementById('errorMsg');
+            // errorEl.innerHTML = `Error: ${err.responseJSON.error}`;
         });
     }
 
     render() {
-    
         return <div className="row">
             <div className="col-xs-2"/>
             <div className="col-xs-8">

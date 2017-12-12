@@ -21,6 +21,7 @@ module.exports = app => {
         });
         Joi.validate(req.body, schema, { stripUnknown: true }, (err, data) => {
             if (err) {
+                console.log("inside first block")
                 const message = err.details[0].message;
                 res.status(400).send({ error: message });
             } else {
@@ -31,6 +32,7 @@ module.exports = app => {
                     else if (!user) res.status(401).send({ error: 'unauthorized' });
                     // If found, compare hashed passwords
                     else if (user.authenticate(data.password)) {
+                        
                         // Regenerate session when signing in to prevent fixation
                         req.session.regenerate(() => {
                             req.session.user = user;
@@ -55,35 +57,13 @@ module.exports = app => {
      */
     app.delete('/v1/session', (req, res) => {
         if (req.session.user) {
+            console.log("Logging out")
             req.session.destroy(() => {
                 res.status(204).end();
             });
         } else {
             res.status(200).end();
         }
-    });
-
-    app.get('/v1/session/github', (req,res)=>{
-        let access_token=req.body.access_token;
-        let queryURL="/user?access_token="+access_token;
-
-        const options = {
-            hostname: 'github.com',
-            port: 443,
-            path: queryURL,
-            method: 'GET'
-        };
-        
-        const request = https.request(options, (response) => {
-        response.on('data', (d) => {
-            return res.status(200).send(d);
-         });    
-        });
-     request.on('error', (e) => {
-            return res.status(404).send({error:e.toString()})
-        });
-
-        request.end();  
     });
 
 };

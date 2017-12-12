@@ -25,8 +25,8 @@ let User = new Schema({
     'city':         { type: String, default: '' },
     'hash':         { type: String, required: true },
     'salt':         { type: String, required: true },
-    'games': [
-        { type: Schema.Types.ObjectId, ref: 'Game' }
+    'movies': [
+        { type: Schema.Types.ObjectId, ref: 'MovieList' }
     ]
 });
 
