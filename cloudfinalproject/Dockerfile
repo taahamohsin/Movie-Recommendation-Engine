@@ -1,5 +1,5 @@
 FROM node:9
-WORKDIR WORKDIR /home/ubuntu/code/cloud/CloudFinalProject/cloudfinalproject
+WORKDIR /home/ubuntu/code/cloud/CloudFinalProject/cloudfinalproject
 COPY package*.json ./
 COPY . .
 EXPOSE 8080
