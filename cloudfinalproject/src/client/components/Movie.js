@@ -40,7 +40,7 @@ export default class Movie extends Component{
  
 
     render(){
-        let duration=moment.duration(this.props.duration, "minutes").format("h:mm");
+        let duration=moment.duration(this.props.runtime, "minutes").format("h:mm");
         let arr=duration.split(":");
         duration=arr[0]+" hour(s) and "+duration[2]+" minute(s)"
         return (
@@ -51,7 +51,7 @@ export default class Movie extends Component{
                 <p>{this.props.plot}</p>
                 {this.props.homepage?<Link to={this.props.homepage} target="_blank" >See More</Link>:""}
                 <p><b>Runtime: </b>{duration}</p>   
-                <p><b>Rating: </b>{this.props.rating}/10</p>
+                <p><b>Rating: </b>{this.props.vote_average}/10</p>
             </div>
         )
 }

@@ -11,8 +11,7 @@ module.exports = (app) => {
         let url = prefix + 'search/movie/?api_key=' + api_key + "&query=" + req.params.title;
         axios.get(url).then(
             function (res) {
-                secondURL = prefix + 'movie/' + res.data.results[0].id + "?api_key=" + api_key;
-                console.log(secondURL)
+                secondURL = prefix + 'movie/' + res.data.results[0].id + "?api_key=" + api_key+"&append_to_response=credits";
             }
         ).then(() => {
             axios.get(secondURL).then(
@@ -24,7 +23,7 @@ module.exports = (app) => {
     });
     let recommend=(movies)=>{
         //compute average runtime
-        let countMovies = 0.0;
+        let countMovies =0.0;
         let sumRuntime = 0;
         let sumRatings = 0;
         //genresFound is an array of json. the json corresponds to {id: , count}
@@ -70,7 +69,7 @@ module.exports = (app) => {
                     actorsFound.push({id: cast[0].id, count: 1})
                     maxActor.name=cast[0].name;
                     maxActor.count=1;
-                    maxActor.id=a.id;
+                    maxActor.id=cast[0].id;
                 }
                 else {
                     actorsFound.forEach(a => {
@@ -91,8 +90,8 @@ module.exports = (app) => {
             }
 
         });
-        let avgRuntime = floor(sumRuntime / countMovies);
-        let avgRate = floor(sumRatings / countMovies);
+        let avgRuntime = Math.floor(sumRuntime / countMovies);
+        let avgRate = Math.floor(sumRatings / countMovies);
         //maxGenre should have the most frequently occuring genre
         //maxActor should have most frequent actor
         //https://api.themoviedb.org/3/
@@ -104,13 +103,14 @@ module.exports = (app) => {
         let url = prefix + 'discover/movie?api_key=' + api_key
             + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&vote_count.gte=" +
             avgRate+"&with_cast=" + maxActor.id + "&with_genres=" + maxGenre.id;
+            // console.log(url)
         axios.get(url).then(
             (list)=> {
                 let movies = [];
-                for (let i = 0; i < 5; i++) {
-                    movies.push(list.results[i].title);
-                    //pull actual data from the list
-                }
+                // for (let i = 0; i < 5; i++) {
+                //     movies.push(list.results[i].title);
+                //     //pull actual data from the list
+                // }
                 let r={recommendedMovies: movies, favGenre: maxGenre.genre, AvgRuntime: avgRuntime, favActor: maxActor.name, averageRating: avgRate};
             })
     };
@@ -128,13 +128,13 @@ module.exports = (app) => {
                 req.body.movies.forEach(movie=>{
                     let actors=[];
                     for (let i=0; i<3; i++) {
-                        actors.push({id: movie.credits.cast[i].id, name:movie.credits.cast[i].name, });
+                        actors.push({id: movie.cast[i].id, name:movie.cast[i].name, });
                     }
                     let genres=[];
                     movie.genres.forEach((genre)=>{
                         genres.push({id: genre.id, name: genre.name})
                     });
-                    let cur={Title: movie.title, Runtime: runtime, Genres:genres,
+                    let cur={Title: movie.title, Runtime: movie.runtime, Genres:genres,
                         Actors: actors, Rating: movie.vote_average, HomePage: movie.homepage};
                     curMovies.push(cur);
                 });
