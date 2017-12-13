@@ -43,12 +43,9 @@ let MovieList = new Schema({
     averageRating:      {   type: Number                }
 });
 
-
-
 MovieList.pre('validate', function(next) {
     next();
 });
 
 /***************** Registration *******************/
-
 module.exports = mongoose.model('MovieList', MovieList);

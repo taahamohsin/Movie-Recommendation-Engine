@@ -58,6 +58,7 @@ class Profile extends Component {
 
     componentDidMount() {
         this.fetchUser(this.props.match.params.username);
+
     }
 
     componentWillReceiveProps(nextProps) {

@@ -120,6 +120,7 @@ module.exports = (app) => {
                             first_name:     user.first_name,
                             last_name:      user.last_name,
                             city:           user.city,
+                            recomMovies:    user.recomMovies
                         });
                     }
                 }, err => {
@@ -167,5 +168,88 @@ module.exports = (app) => {
             });
         }
     });
+
+    //I'd imagine when we create a new movielist, we compute all this stuff
+    //function that computes average runtime
+    //function that computes average rating
+    //function that returns the most frequently occuring genre
+    //function that returns the most frequently actor (and another for director maybe)
+    //this is the put request that will generate the new movielist
+    app.put('/v1/user/:username/movie/recommend', (req, res) => {
+        //get data from client
+        let movies = req.body.movies;
+        //compute average runtime
+        let countMovies = 0;
+        let sumRuntime = 0;
+        let sumRatings = 0;
+        //genresFound is an array of json. the json corresponds to {id: , count}
+        let genresFound = [];
+        //actorsFound is an array of json. the json corresponds to {id, count}
+        let actorsFound = [];
+        let maxGenre = {genre: "", count: 0};
+        let maxActor = {name: "", count: 0};
+        movies.forEach(movie => {
+            countMovies = countMovies + 1;
+            sumRuntime = sumRuntime + movie.runtime;
+            sumRatings = sumRatings + movie.vote_average;
+            movie.genres.forEach(genre => {
+                if (genresFound.length === 0) {
+                    genresFound.push({id: genre.id, count: 1});
+                    maxGenre.genre = genre.name;
+                    maxGenre.count = 1;
+                }
+                else {
+                    genresFound.forEach(g => {
+                        if (genre.id === g.id) {
+                            //found a genre again so update count
+                            g.count = g.count + 1;
+                            //if found a new max
+                            if (g.count > maxGenre.count) {
+                                maxGenre.genre = genre.name;
+                                maxGenre.count = g.count;
+                            }
+                        }
+                        else {
+                            //new genre so insert into array
+                            genresFound.push({id: genre.id, count: 1});
+                        }
+                    })
+                }
+
+            });
+            let cast = movie.credits.cast;
+            for (let i = 0; i < 3; i++) {
+                if (actorsFound.length === 0) {
+                    actorsFound.push({id: cast[0].id, count: 1})
+                }
+                else {
+                    actorsFound.forEach(a => {
+                        if (movie.credits.cast[i].id === a.id) {
+                            a.count = a.count + 1;
+                            if (a.count > maxActor.count) {
+                                maxActor.name = cast[i].name;
+                                maxActor.count = a.count;
+                            }
+                        }
+                        else {
+                            actorsFound.push({id: cast[i].id, count: 1})
+                        }
+                    });
+                }
+
+            }
+
+        });
+        let avgRuntime = sumRuntime / countMovies;
+        let avgRate = sumRatings / countMovies;
+        //maxGenre should have the most frequently occuring genre
+        //maxActor should have most frequent actor
+
+        //how to know which user. parameter? body?
+        let query= {username: req.params.username};
+        let r={recommendedMovies: [], favGenre: maxGenre.genre, AvgRuntime: avgRuntime, favActor: maxActor.name, averageRating: avgRate};
+        app.models.User.findOneAndUpdate(query, { $set: {recomMovies: r}, $push: {movies: {$each: m}}})
+        //send some kind of status
+    })
 
 };

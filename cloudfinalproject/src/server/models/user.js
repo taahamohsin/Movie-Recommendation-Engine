@@ -6,6 +6,42 @@ let crypto              = require('crypto'),
 
 /***************** User Model *******************/
 
+let Movie = new Schema({
+    Title:      {   type: String, required: true     },
+    Year:       {   type: Number    },
+    Rated:      {   type: String    },
+    Released:   {   type: String    },
+    Runtime:    {   type: Number    },
+    Genre:      {   type: String    },
+    Director:   {   type: String    },
+    Actors:     {   type: [String]  },
+    Plot:       {   type: String    },
+    Language:   {   type: [String]  },
+    Country:    {   type: String    },
+    Awards:     {   type: String    },
+    PosterUrl:  {   type: String    }, // TODO: look into how images are stored as binary data in MongoDB
+    Ratings:    {   type: Array     },
+    Metascore:  {   type: Number    },
+    imdbRating: {   type: Number    },
+    imdbVotes:  {   type: Number    },
+    imdbID:     {   type: Number    },
+    Type:       {   type: String    },
+    DVD:        {   type: Date      },
+    BoxOffice:  {   type: String    },
+    Production: {   type: String    },
+    Website:    {   type: String    },
+    Response:   {   type: Boolean   }
+});
+
+/* Schema for overall list */
+let MovieList = new Schema({
+    recommendedMovies:  {   type: [Movie], required: true },
+    favGenre:           {   type: String                },
+    AvgRuntime:         {   type: Number                },
+    favActor:           {   type: String                },
+    averageRating:      {   type: Number                }
+});
+
 const makeSalt = () => (
     Math.round((new Date().valueOf() * Math.random())) + ''
 );
@@ -24,9 +60,8 @@ let User = new Schema({
     'city':         { type: String, default: '' },
     'hash':         { type: String, required: true },
     'salt':         { type: String, required: true },
-    'movies': [
-        { type: Schema.Types.ObjectId, ref: 'MovieList' }
-    ]
+    'movies':       [{ type: Movie }],
+    'recomMovies':  {type: MovieList}
 });
 
 User.path('username').validate(function(value) {
