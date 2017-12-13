@@ -14,17 +14,12 @@ const tableStyle={
     color:'LightGray'
 }
 
-/*const Game = ({ game, index }) => {
-    let date = new Date(game.start);
-    const url = game.active ? `/game/${game.id}` : `/results/${game.id}`;
+const Movie = ({ movie, index }) => {
+    //const url = movie.homepage;
     return <tr key={index}>
-        <th><Link to={url}>{game.active ? "Active" : "Complete"}</Link></th>
-        <th>{date.toLocaleString()}</th>
-        <th>{game.moves}</th>
-        <th>{game.score}</th>
-        <th>{game.game}</th>
+        <th>{movie}</th>
     </tr>;
-};*/
+};
 
 class Profile extends Component {
     constructor(props) {
@@ -32,7 +27,7 @@ class Profile extends Component {
         this.state = {
             user: {
                 primary_email: "",
-                games: [],
+                movies: [],
             },
             editing:false
 
@@ -119,7 +114,14 @@ class Profile extends Component {
         // Is the logged in user viewing their own profile
         const isUser = this.props.match.params.username === this.props.user.getUser().username;
         // Build array of games
-       
+        if (this.state.user.recomMovies) {
+            let movies =this.state.user.recomMovies.recommendedMovies.map((movie, index) =>{
+                <Movie key={index} movie={movie} index={index}/>
+            });
+        }
+        else {
+            let movies = <div/>;
+        }
         return <div className="row" style={divStyle}>
             <div className="center-block">
                 <p id="errorMsg" className="bg-danger"/>
@@ -196,7 +198,7 @@ class Profile extends Component {
                             <th>Score</th>
                         </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>{movies}</tbody>
                     </table>
                 </div>
             </div>

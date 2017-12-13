@@ -45,8 +45,8 @@ app.use(session({
     }
 }));
 // Finish pipeline setup
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({ extended: true, parameterLimit: 1000000 , limit: '50mb'}));
 dotenv.config();
 // Connect to mongoBD
 let options = {
