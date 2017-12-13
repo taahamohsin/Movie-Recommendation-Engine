@@ -103,16 +103,18 @@ module.exports = (app) => {
         let url = prefix + 'discover/movie?api_key=' + api_key
             + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&vote_count.gte=" +
             avgRate+"&with_cast=" + maxActor.id + "&with_genres=" + maxGenre.id;
-            // console.log(url)
+            console.log(url)
         axios.get(url).then(
             (list)=> {
                 let movies = [];
-                // for (let i = 0; i < 5; i++) {
-                //     movies.push(list.results[i].title);
-                //     //pull actual data from the list
-                // }
+                for (let i = 0; i < 5; i++) {
+                    movies.push(list.data.results[i].title);
+                    //pull actual data from the list
+                }
                 let r={recommendedMovies: movies, favGenre: maxGenre.genre, AvgRuntime: avgRuntime, favActor: maxActor.name, averageRating: avgRate};
-            })
+                console.log(r)
+                return r;
+         })
     };
     //I'd imagine when we create a new movielist, we compute all this stuff
     //function that computes average runtime
@@ -141,9 +143,9 @@ module.exports = (app) => {
                 });
                 let rec=recommend(curMovies);
                 let query= {_id: req.session.user};
-                app.models.User.findOneAndUpdate(query, {$set: {recomMovies: rec, movies: curMovies}})
-                    .then(()=>{res.status(201).send({message: "HERE"})}
-                    );
+                // app.models.User.findOneAndUpdate(query, {$set: {recomMovies: rec, movies: curMovies}})
+                //     .then(()=>{res.status(201).send({message: "HERE"})}
+                //     );
         });
 
 

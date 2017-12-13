@@ -74,7 +74,10 @@ module.exports = (app) => {
                                 res.status(400).send({error: 'email address already in use'});
                         }
                         // Something else in the username failed
-                        else res.status(400).send({error: 'invalid username'});
+                        else{ 
+                            console.log(JSON.stringify(err))
+                            console.log("Yo")
+                            res.status(400).send({error: 'invalid username'});}
 
                     }
                 );
