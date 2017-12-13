@@ -25,28 +25,11 @@ class Movies extends Component{
         this.state={
             movies:[]
         };
-        this.onSubmit=  this.onSubmit.bind(this);
         this.onAdd  =   this.onAdd.bind(this);
         this.final  =   this.final.bind(this);
         this.getIndex=  this.getIndex.bind(this);
     }    
 
-    onSubmit=(event)=>{
-        event.preventDefault();
-        let query=document.getElementById('title').value
-        $.ajax({
-            method:'GET',
-            url:`/v1/movie/${query}`
-        }).then(
-            (res)=>{
-                console.log(JSON.stringify(res));
-        }
-        ).fail(
-            err=>{
-                console.log(JSON.stringify(err))
-            }
-        )
-    }
 
     onAdd=(event)=>{
         event.preventDefault();
@@ -68,7 +51,6 @@ class Movies extends Component{
                 console.log(JSON.stringify(err))
             }
         )
-        // add to this.state.movies and trigger a re-render
     }
 
     final() {
@@ -96,7 +78,7 @@ class Movies extends Component{
 
     render(){ 
         let movies = this.state.movies.map((movie, index) => (
-            <Movie key={index} title={movie.title} plot={movie.plot} homepage={movie.homepage} duration={movie.duration} rating={movie.rating} anchor={index} onRemove={this.getIndex}/>
+            <Movie key={index} title={movie.title} plot={movie.plot} homepage={movie.homepage} duration={movie.duration} rating={movie.rating} onRemove={this.getIndex}/>
         ));
 
         return(
@@ -123,8 +105,6 @@ class Movies extends Component{
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-20">
                             <div className='btn-group-vertical'>
-                                <button className="btn btn-default" style={buttonStyle} onClick={this.onSubmit}>Search by title</button>
-                                <br/>
                                 <button className="btn btn-default" style={buttonStyle} onClick={this.onAdd}>Add to my list</button>
                                 <br/>
                                 <button className="btn btn-default" style={buttonStyle} onClick={this.final}>Give me recommendations</button>

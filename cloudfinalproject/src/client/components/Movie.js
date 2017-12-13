@@ -43,7 +43,6 @@ export default class Movie extends Component{
         let duration=moment.duration(this.props.duration, "minutes").format("h:mm");
         let arr=duration.split(":");
         duration=arr[0]+" hour(s) and "+duration[2]+" minute(s)"
-        let number=this.props.anchor
         return (
             <div key={this.props.index} style={divStyle}>
                 <button className="btn btn-default" style={buttonStyle} onClick={()=>this.props.onRemove(this.props.title)}>Remove</button>
@@ -53,7 +52,6 @@ export default class Movie extends Component{
                 {this.props.homepage?<Link to={this.props.homepage} target="_blank" >See More</Link>:""}
                 <p><b>Runtime: </b>{duration}</p>   
                 <p><b>Rating: </b>{this.props.rating}/10</p>
-                <p style={hidden}>{this.props.anchor}</p>
             </div>
         )
 }

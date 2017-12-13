@@ -3504,19 +3504,6 @@ var Movies = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Movies.__proto__ || Object.getPrototypeOf(Movies)).call(this, props));
 
-        _this.onSubmit = function (event) {
-            event.preventDefault();
-            var query = document.getElementById('title').value;
-            $.ajax({
-                method: 'GET',
-                url: '/v1/movie/' + query
-            }).then(function (res) {
-                console.log(JSON.stringify(res));
-            }).fail(function (err) {
-                console.log(JSON.stringify(err));
-            });
-        };
-
         _this.onAdd = function (event) {
             event.preventDefault();
             var query = document.getElementById('title').value;
@@ -3532,13 +3519,11 @@ var Movies = function (_Component) {
             }).fail(function (err) {
                 console.log(JSON.stringify(err));
             });
-            // add to this.state.movies and trigger a re-render
         };
 
         _this.state = {
             movies: []
         };
-        _this.onSubmit = _this.onSubmit.bind(_this);
         _this.onAdd = _this.onAdd.bind(_this);
         _this.final = _this.final.bind(_this);
         _this.getIndex = _this.getIndex.bind(_this);
@@ -3579,7 +3564,7 @@ var Movies = function (_Component) {
             var _this3 = this;
 
             var movies = this.state.movies.map(function (movie, index) {
-                return _react2.default.createElement(_Movie2.default, { key: index, title: movie.title, plot: movie.plot, homepage: movie.homepage, duration: movie.duration, rating: movie.rating, anchor: index, onRemove: _this3.getIndex });
+                return _react2.default.createElement(_Movie2.default, { key: index, title: movie.title, plot: movie.plot, homepage: movie.homepage, duration: movie.duration, rating: movie.rating, onRemove: _this3.getIndex });
             });
 
             return _react2.default.createElement(
@@ -3639,12 +3624,6 @@ var Movies = function (_Component) {
                             _react2.default.createElement(
                                 'div',
                                 { className: 'btn-group-vertical' },
-                                _react2.default.createElement(
-                                    'button',
-                                    { className: 'btn btn-default', style: buttonStyle, onClick: this.onSubmit },
-                                    'Search by title'
-                                ),
-                                _react2.default.createElement('br', null),
                                 _react2.default.createElement(
                                     'button',
                                     { className: 'btn btn-default', style: buttonStyle, onClick: this.onAdd },
@@ -26994,7 +26973,6 @@ var Movie = function (_Component) {
             var duration = moment.duration(this.props.duration, "minutes").format("h:mm");
             var arr = duration.split(":");
             duration = arr[0] + " hour(s) and " + duration[2] + " minute(s)";
-            var number = this.props.anchor;
             return _react2.default.createElement(
                 'div',
                 { key: this.props.index, style: divStyle },
@@ -27040,11 +27018,6 @@ var Movie = function (_Component) {
                     ),
                     this.props.rating,
                     '/10'
-                ),
-                _react2.default.createElement(
-                    'p',
-                    { style: hidden },
-                    this.props.anchor
                 )
             );
         }
