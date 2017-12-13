@@ -1,8 +1,8 @@
 'use strict';
 
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
-import Movie from './Movie.js'
+import Movie from './Movie.js';
 
 const labelStyle={
     color:'LightGray'
@@ -28,6 +28,7 @@ class Movies extends Component{
         this.onSubmit=  this.onSubmit.bind(this);
         this.onAdd  =   this.onAdd.bind(this);
         this.final  =   this.final.bind(this);
+        this.getIndex=  this.getIndex.bind(this);
     }    
 
     onSubmit=(event)=>{
@@ -48,8 +49,6 @@ class Movies extends Component{
     }
 
     onAdd=(event)=>{
-        console.log(this.state)
-        console.log(this.state.movies)
         event.preventDefault();
         let query=document.getElementById('title').value
         $.ajax({
@@ -59,13 +58,10 @@ class Movies extends Component{
             (res)=>{
                  let newMovies=this.state.movies;
                newMovies.push(
-                    {'title':res.data.original_title,'plot':res.data.overview, 'homepage':res.data.homepage, 'duration':res.data.runtime});
-                console.log('BEFORE '+(this.state.movies))
+                    {'title':res.data.original_title,'plot':res.data.overview, 'homepage':res.data.homepage, 'duration':res.data.runtime, 'rating':res.data.vote_average});
                 this.setState({
                     movies:newMovies
                 })
-                console.log('AFTER '+(this.state.movies))
-
         }
         ).fail(
             err=>{
@@ -89,12 +85,19 @@ class Movies extends Component{
         })
     }
 
+    getIndex(index){
+        let newArr=this.state.movies.filter(movie=>movie.title!=index)
+        console.log(newArr)
+        this.setState({
+            movies:newArr
+        })
+        
+    }
+
     render(){ 
-                console.log(this.state.movies)    
         let movies = this.state.movies.map((movie, index) => (
-            <Movie key={index} title={movie.title} plot={movie.plot} homepage={movie.homepage} duration={movie.duration}/>
+            <Movie key={index} title={movie.title} plot={movie.plot} homepage={movie.homepage} duration={movie.duration} rating={movie.rating} anchor={index} onRemove={this.getIndex}/>
         ));
-        console.log(this.state.movies)    
 
         return(
             <div>
@@ -123,11 +126,12 @@ class Movies extends Component{
                                 <button className="btn btn-default" style={buttonStyle} onClick={this.onSubmit}>Search by title</button>
                                 <br/>
                                 <button className="btn btn-default" style={buttonStyle} onClick={this.onAdd}>Add to my list</button>
+                                <br/>
+                                <button className="btn btn-default" style={buttonStyle} onClick={this.final}>Give me recommendations</button>
                             </div>
                         </div>
                     </div>
                 </form>
-                //<button className="btn btn-default" style={buttonStyle} onClick={}>Give me recommendations</button>
                 {movies}
             </div>
         )

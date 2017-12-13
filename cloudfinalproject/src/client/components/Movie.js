@@ -11,33 +11,49 @@ const divStyle={
     paddingLeft:'2.5px',
     paddingRight:'2.5px',
     textAlign:'center',
-    marginBottom:'20px'
+    marginBottom:'20px',
+    position:'relative'
 }
 
 const headerStyle={
     textAlign:'center'
 }
 
+const buttonStyle={
+    backgroundColor:'#8B7D20',
+    border: '1px solid #8B7D20',
+    borderRadius:'5px',
+    position:'relative',
+    top:'0',
+    right:'0'
+}
+
+const hidden={
+    visibility:'hidden'
+}
+
 export default class Movie extends Component{
     
     constructor(props){
         super(props);
-        this.state={
-            url:""
-        }
     }
-    
+ 
+
     render(){
         let duration=moment.duration(this.props.duration, "minutes").format("h:mm");
         let arr=duration.split(":");
         duration=arr[0]+" hour(s) and "+duration[2]+" minute(s)"
+        let number=this.props.anchor
         return (
             <div key={this.props.index} style={divStyle}>
+                <button className="btn btn-default" style={buttonStyle} onClick={()=>this.props.onRemove(this.props.title)}>Remove</button>
                 <h3 style={headerStyle}>{this.props.title}</h3>
                 {/*{this.props.poster?<Image src={image} responsive/>:null}*/}
                 <p>{this.props.plot}</p>
-                <Link to={this.props.homepage} target="_blank" >See More</Link>
-                <p>{duration}</p>
+                {this.props.homepage?<Link to={this.props.homepage} target="_blank" >See More</Link>:""}
+                <p><b>Runtime: </b>{duration}</p>   
+                <p><b>Rating: </b>{this.props.rating}/10</p>
+                <p style={hidden}>{this.props.anchor}</p>
             </div>
         )
 }
