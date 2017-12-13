@@ -15,7 +15,6 @@ const tableStyle={
 }
 
 const Movie = ({ movie, index }) => {
-    //const url = movie.homepage;
     return <tr key={index}>
         <th>{movie.title}</th>
         <th>{movie.score}</th>
@@ -45,11 +44,13 @@ class Profile extends Component {
             method: "get"
         })
             .then(data => {
+                console.log(JSON.stringify(data))
                 this.setState({ user: data });
             })
             .fail(err => {
+                console.log(JSON.stringify(err))
                 let errorEl = document.getElementById('errorMsg');
-                errorEl.innerHTML = `Error: ${err.responseJSON.error}`;
+                // errorEl.innerHTML = `Error: ${err.responseJSON.error}`;
             });
     }
 
@@ -117,9 +118,15 @@ class Profile extends Component {
         const isUser = this.props.match.params.username === this.props.user.getUser().username;
         // Build array of games
         console.log(this.state.user.recomMovies.recommendedMovies);
-        let movies =this.state.user.recomMovies.recommendedMovies.map((movie, index) =>{
-                <Movie key={index} movie={movie} index={index}/>
-        });
+        let movies=[];
+        for(let index=0; index<this.state.user.recomMovies.recommendedMovies.length; index++){
+            movies.push(<Movie key={index} movie={this.state.user.recomMovies.recommendedMovies[index]} index={index}/>)
+        }
+        // let movies =this.state.user.recomMovies.recommendedMovies.map((movie, index) =>{
+        //         <Movie key={index} movie={movie} index={index}/>
+        // });
+        console.log("MOVIES")
+        console.log((movies))
         return <div className="row" style={divStyle}>
             <div className="center-block">
                 <p id="errorMsg" className="bg-danger"/>
@@ -187,7 +194,7 @@ class Profile extends Component {
                 <div className="row">
                     <div className="col-xs-12">                        
                         { isUser ? <Link to="/movies">Look for movies</Link> : undefined }
-                        <h4 id="games_count">10 movie recommendations for you</h4>
+                        <h4 id="games_count">{this.state.user.recomMovies.recommendedMovies.length} movie recommendations for you</h4>
                     </div>
                     <table id="gameTable" className="col-xs-12 table" style={tableStyle}>
                         <thead>

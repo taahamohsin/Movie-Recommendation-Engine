@@ -26376,7 +26376,6 @@ var Movie = function Movie(_ref) {
     var movie = _ref.movie,
         index = _ref.index;
 
-    //const url = movie.homepage;
     return _react2.default.createElement(
         'tr',
         { key: index },
@@ -26425,10 +26424,12 @@ var Profile = function (_Component) {
                 url: '/v1/user/' + username,
                 method: "get"
             }).then(function (data) {
+                console.log(JSON.stringify(data));
                 _this2.setState({ user: data });
             }).fail(function (err) {
+                console.log(JSON.stringify(err));
                 var errorEl = document.getElementById('errorMsg');
-                errorEl.innerHTML = 'Error: ' + err.responseJSON.error;
+                // errorEl.innerHTML = `Error: ${err.responseJSON.error}`;
             });
         }
     }, {
@@ -26499,9 +26500,15 @@ var Profile = function (_Component) {
             var isUser = this.props.match.params.username === this.props.user.getUser().username;
             // Build array of games
             console.log(this.state.user.recomMovies.recommendedMovies);
-            var movies = this.state.user.recomMovies.recommendedMovies.map(function (movie, index) {
-                _react2.default.createElement(Movie, { key: index, movie: movie, index: index });
-            });
+            var movies = [];
+            for (var index = 0; index < this.state.user.recomMovies.recommendedMovies.length; index++) {
+                movies.push(_react2.default.createElement(Movie, { key: index, movie: this.state.user.recomMovies.recommendedMovies[index], index: index }));
+            }
+            // let movies =this.state.user.recomMovies.recommendedMovies.map((movie, index) =>{
+            //         <Movie key={index} movie={movie} index={index}/>
+            // });
+            console.log("MOVIES");
+            console.log(movies);
             return _react2.default.createElement(
                 'div',
                 { className: 'row', style: divStyle },
@@ -26703,7 +26710,8 @@ var Profile = function (_Component) {
                             _react2.default.createElement(
                                 'h4',
                                 { id: 'games_count' },
-                                '10 movie recommendations for you'
+                                this.state.user.recomMovies.recommendedMovies.length,
+                                ' movie recommendations for you'
                             )
                         ),
                         _react2.default.createElement(

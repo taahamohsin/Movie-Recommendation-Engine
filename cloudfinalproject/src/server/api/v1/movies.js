@@ -34,26 +34,22 @@ module.exports = (app) => {
         app.models.User.findOne({username:req.session.user.username})
             .then((user)=>{
                 if (user) {
-
-                } else {
-
-                }
-                console.log(JSON.stringify(req.session.user))
-                let curMovies=user.movies;
-                req.body.movies.forEach(movie=>{
-                    let actors=[];
-                    for (let i=0; i<3; i++) {
-                        actors.push({id: movie.cast[i].id, name:movie.cast[i].name, });
-                    }
-                    let genres=[];
-                    movie.genres.forEach((genre)=>{
-                        genres.push({id: genre.id, name: genre.name})
+                    console.log(JSON.stringify(req.session.user))
+                    let curMovies=user.movies;
+                    req.body.movies.forEach(movie=>{
+                        let actors=[];
+                        for (let i=0; i<3; i++) {
+                            actors.push({id: movie.cast[i].id, name:movie.cast[i].name, });
+                        }
+                        let genres=[];
+                        movie.genres.forEach((genre)=>{
+                            genres.push({id: genre.id, name: genre.name})
+                        });
+                        let cur={Title: movie.title, Runtime: movie.runtime, Genres:genres,
+                            Actors: actors, Rating: movie.vote_average, HomePage: movie.homepage};
+                        curMovies.push(cur);
                     });
-                    let cur={Title: movie.title, Runtime: movie.runtime, Genres:genres,
-                        Actors: actors, Rating: movie.vote_average, HomePage: movie.homepage};
-                    curMovies.push(cur);
-                });
-                //let rec=recommend(curMovies);
+                    //let rec=recommend(curMovies);
                     //compute average runtime
                     let countMovies =0.0;
                     let sumRuntime = 0;
@@ -154,17 +150,20 @@ module.exports = (app) => {
                             let query= {_id: req.session.user};
                             app.models.User.findOneAndUpdate(query, {$set: {recomMovies: r, movies: curMovies}})
                                 .then(
-                                    ()=>{res.status(201).send({message: "HERE"})}
-                                )
+                                    ()=>{res.status(201).send({message: "HERE"})},
+                                err=>{
+                                    console.log(err);
+                                    res.status(400).send({error: "Couldn't update recommended movies"})
+                                }
+                            )
 
                         })
-
-                //console.log("In the main method before updating");
-                //console.log(rec);
-
-        });
-
-
+                } else {
+                    res.status(400).send({error: "couldn't find user"})
+                }}
+                , err=>{
+                    res.status(400).send({error: "Mongo couldn't find user"})
+                })
 
         //find one, that will give us the current movies array
         //we'll push to the movies arrays with the new ones
