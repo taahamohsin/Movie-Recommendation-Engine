@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Redirect, withRouter } from 'react-router-dom';
+import Movie from './Movie.js'
 
 const labelStyle={
     color:'LightGray'
@@ -15,7 +16,6 @@ const formStyles={
     margin:'0px 20px 0px 0px'
 }
 
-
 class Movies extends Component{
 
     constructor(props){
@@ -27,7 +27,7 @@ class Movies extends Component{
         this.onAdd  =   this.onAdd.bind(this);
     }    
 
-    onSubmit(event){
+    onSubmit=(event)=>{
         event.preventDefault();
         let query=document.getElementById('title').value
         $.ajax({
@@ -36,7 +36,7 @@ class Movies extends Component{
         }).then(
             (res)=>{
                 console.log(JSON.stringify(res));
-            }
+        }
         ).fail(
             err=>{
                 console.log(JSON.stringify(err))
@@ -44,12 +44,30 @@ class Movies extends Component{
         )
     }
 
-    onAdd(event){
+    onAdd=(event)=>{
         event.preventDefault();
+        let query=document.getElementById('title').value
+        $.ajax({
+            method:'GET',
+            url:`/v1/movie/${query}`
+        }).then(
+            (res)=>{
+                // console.log('https://image.tmdb.org/t/p/w342'+res.data.poster_path)
+                // let url='https://image.tmdb.org/t/p/w342'+res.data.poster_path;
+                this.setState({
+                    movies:[<Movie index={this.state.movies.length} title={res.data.original_title} plot={res.data.overview}/>]
+                })
+        }
+        ).fail(
+            err=>{
+                console.log(JSON.stringify(err))
+            }
+        )
         // add to this.state.movies and trigger a re-render
     }
 
     render(){
+        console.log(this.state);
         return(
             <div>
                 <form className="form-inline">
@@ -80,7 +98,9 @@ class Movies extends Component{
                             </div>
                         </div>
                     </div>
-                </form>           
+                </form>  
+                {console.log(this.state)}
+                {this.state.movies[0]}       
             </div>
         )
     }

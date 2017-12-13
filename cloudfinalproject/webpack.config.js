@@ -22,7 +22,8 @@ module.exports = {
             // required for babel to kick in
             { test: /\.js$/, exclude: /node_modules/, use: [
                 { loader: "babel-loader", query  :{
-                    presets:['react','es2015', 'stage-3']
+                    presets:['react','es2015', 'stage-3'],
+                    plugins: ['transform-class-properties']
                 } }
             ]},
 
@@ -31,7 +32,7 @@ module.exports = {
                 { loader: "style-loader" },
                 { loader: "css-loader" }
             ]},
-            { test: /\.png$/,  use: [
+            { test: /\.(png|jpg)$/,  use: [
                 { loader: "url-loader?limit=100000" }
             ]},
             { test: /\.svg$/,           use: [

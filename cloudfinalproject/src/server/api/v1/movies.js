@@ -7,7 +7,6 @@ module.exports = (app) => {
 
     app.get('/v1/movie/:title', function(req,res){
         let secondURL;
-        // console.log(JSON.stringify(req.params))
         let prefix='https://api.themoviedb.org/3/'
         let url=prefix+'search/movie/?api_key='+api_key+"&query="+req.params.title;
         axios.get(url).then(
@@ -24,13 +23,7 @@ module.exports = (app) => {
             )
         })
 
-        
 });
         
-        
-       
-    
-
-
 };
 
