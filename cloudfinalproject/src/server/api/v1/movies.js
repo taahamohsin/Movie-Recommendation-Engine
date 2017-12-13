@@ -122,8 +122,9 @@ module.exports = (app) => {
     //this is the put request that will generate the new movielist
     app.put('/v1/movie/watch', (req, res) => {
         //get data from client
-        app.models.User.findById(req.session.user)
+        app.models.User.findOne({username:req.session.user.username})
             .then((user)=>{
+                console.log(JSON.stringify(req.session.user))
                 let curMovies=user.movies;
                 req.body.movies.forEach(movie=>{
                     let actors=[];
