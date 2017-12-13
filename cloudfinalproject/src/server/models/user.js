@@ -5,32 +5,21 @@ let crypto              = require('crypto'),
     Schema              = mongoose.Schema;
 
 /***************** User Model *******************/
-
+let Actor = new Schema({
+    id:         { type: Number},
+    name:       { type: String}
+});
+let Genre = new Schema({
+    id:         { type: Number},
+    name:       { type: String}
+});
 let Movie = new Schema({
     Title:      {   type: String, required: true     },
-    Year:       {   type: Number    },
-    Rated:      {   type: String    },
-    Released:   {   type: String    },
     Runtime:    {   type: Number    },
-    Genre:      {   type: String    },
-    Director:   {   type: String    },
-    Actors:     {   type: [String]  },
-    Plot:       {   type: String    },
-    Language:   {   type: [String]  },
-    Country:    {   type: String    },
-    Awards:     {   type: String    },
-    PosterUrl:  {   type: String    }, // TODO: look into how images are stored as binary data in MongoDB
-    Ratings:    {   type: Array     },
-    Metascore:  {   type: Number    },
-    imdbRating: {   type: Number    },
-    imdbVotes:  {   type: Number    },
-    imdbID:     {   type: Number    },
-    Type:       {   type: String    },
-    DVD:        {   type: Date      },
-    BoxOffice:  {   type: String    },
-    Production: {   type: String    },
-    Website:    {   type: String    },
-    Response:   {   type: Boolean   }
+    Genres:      {   type: [Genre]    },
+    Actors:      {   type: [Actor]    },
+    Rating:    {   type: Number    },
+    HomePage:   {   type: String  }
 });
 
 /* Schema for overall list */
@@ -60,8 +49,8 @@ let User = new Schema({
     'city':         { type: String, default: '' },
     'hash':         { type: String, required: true },
     'salt':         { type: String, required: true },
-    'movies':       [{ type: Movie }],
-    'recomMovies':  {type: MovieList}
+    'movies':       { type: [Movie], default: [] },
+    'recomMovies':  {type: MovieList, default: {recommendedMovies: [], favGenre: "", AvgRunTime: 0, favActor: "", averageRating: 0}}
 });
 
 User.path('username').validate(function(value) {

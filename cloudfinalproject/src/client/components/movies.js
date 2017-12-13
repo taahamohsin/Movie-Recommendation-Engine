@@ -127,7 +127,7 @@ class Movies extends Component{
                         </div>
                     </div>
                 </form>
-                //<button className="btn btn-default" style={buttonStyle} onClick={}>Give me recommendations</button>
+                <button className="btn btn-default" style={buttonStyle} onClick={final}>Give me recommendations</button>
                 {movies}
             </div>
         )
