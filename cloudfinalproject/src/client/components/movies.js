@@ -39,9 +39,9 @@ class Movies extends Component{
             url:`/v1/movie/${query}`
         }).then(
             (res)=>{
-                 let newMovies=this.state.movies;
-               newMovies.push(
-                    {'title':res.data.original_title,'plot':res.data.overview, 'homepage':res.data.homepage, 'duration':res.data.runtime, 'rating':res.data.vote_average});
+                let newMovies=this.state.movies;
+                newMovies.push(
+                    {'title':res.data.original_title,'plot':res.data.overview, 'homepage':res.data.homepage, 'runtime':res.data.runtime, 'vote_average':res.data.vote_average, 'cast':res.data.credits.cast, 'genres':res.data.genres});
                 this.setState({
                     movies:newMovies
                 })
@@ -78,7 +78,7 @@ class Movies extends Component{
 
     render(){ 
         let movies = this.state.movies.map((movie, index) => (
-            <Movie key={index} title={movie.title} plot={movie.plot} homepage={movie.homepage} duration={movie.duration} rating={movie.rating} onRemove={this.getIndex}/>
+            <Movie key={index} title={movie.title} plot={movie.plot} homepage={movie.homepage} runtime={movie.runtime} vote_average={movie.vote_average} onRemove={this.getIndex} cast={movie.cast} genres={movie.genres}/>
         ));
 
         return(
