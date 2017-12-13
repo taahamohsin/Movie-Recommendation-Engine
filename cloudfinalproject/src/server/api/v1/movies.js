@@ -24,15 +24,15 @@ module.exports = (app) => {
     });
     let recommend=(movies)=>{
         //compute average runtime
-        let countMovies = 0;
+        let countMovies = 0.0;
         let sumRuntime = 0;
         let sumRatings = 0;
         //genresFound is an array of json. the json corresponds to {id: , count}
         let genresFound = [];
         //actorsFound is an array of json. the json corresponds to {id, count}
         let actorsFound = [];
-        let maxGenre = {genre: "", count: 0};
-        let maxActor = {name: "", count: 0};
+        let maxGenre = {genre: "", id: 0, count: 0};
+        let maxActor = {name: "", id: 0, count: 0};
         movies.forEach(movie => {
             countMovies = countMovies + 1;
             sumRuntime = sumRuntime + movie.Runtime;
@@ -42,6 +42,7 @@ module.exports = (app) => {
                     genresFound.push({id: genre.id, count: 1});
                     maxGenre.genre = genre.name;
                     maxGenre.count = 1;
+                    maxGenre.id=genre.id;
                 }
                 else {
                     genresFound.forEach(g => {
@@ -52,6 +53,7 @@ module.exports = (app) => {
                             if (g.count > maxGenre.count) {
                                 maxGenre.genre = genre.name;
                                 maxGenre.count = g.count;
+                                maxGenre.id=genre.id;
                             }
                         }
                         else {
@@ -66,6 +68,9 @@ module.exports = (app) => {
             for (let i = 0; i < 3; i++) {
                 if (actorsFound.length === 0) {
                     actorsFound.push({id: cast[0].id, count: 1})
+                    maxActor.name=cast[0].name;
+                    maxActor.count=1;
+                    maxActor.id=a.id;
                 }
                 else {
                     actorsFound.forEach(a => {
@@ -74,6 +79,7 @@ module.exports = (app) => {
                             if (a.count > maxActor.count) {
                                 maxActor.name = cast[i].name;
                                 maxActor.count = a.count;
+                                maxActor.id=a.id;
                             }
                         }
                         else {
@@ -85,26 +91,28 @@ module.exports = (app) => {
             }
 
         });
-        let avgRuntime = sumRuntime / countMovies;
-        let avgRate = sumRatings / countMovies;
+        let avgRuntime = floor(sumRuntime / countMovies);
+        let avgRate = floor(sumRatings / countMovies);
         //maxGenre should have the most frequently occuring genre
         //maxActor should have most frequent actor
+        //https://api.themoviedb.org/3/
+        //discover/movie?api_key=
+        // 2da9192ee0949a9d883335aa3b52c6df
+        // &language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&vote_count.gte=7&with_cast=3223&with_genres=28
         let secondURL;
         let prefix = 'https://api.themoviedb.org/3/'
-        let url = prefix + 'search/movie/?api_key=' + api_key + "&query=" + req.params.title;
+        let url = prefix + 'discover/movie?api_key=' + api_key
+            + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&vote_count.gte=" +
+            avgRate+"&with_cast=" + maxActor.id + "&with_genres=" + maxGenre.id;
         axios.get(url).then(
-            function (res) {
-                secondURL = prefix + 'movie/' + res.data.results[0].id + "?api_key=" + api_key;
-                console.log(secondURL)
-            }
-        ).then(() => {
-            axios.get(secondURL).then(
-                function (response) {
-                    res.status(200).send({data: response.data});
+            (list)=> {
+                let movies = [];
+                for (let i = 0; i < 5; i++) {
+                    movies.push(list.results[i].title);
+                    //pull actual data from the list
                 }
-            )
-        })
-        //let r={recommendedMovies: [], favGenre: maxGenre.genre, AvgRuntime: avgRuntime, favActor: maxActor.name, averageRating: avgRate};
+                let r={recommendedMovies: movies, favGenre: maxGenre.genre, AvgRuntime: avgRuntime, favActor: maxActor.name, averageRating: avgRate};
+            })
     };
     //I'd imagine when we create a new movielist, we compute all this stuff
     //function that computes average runtime

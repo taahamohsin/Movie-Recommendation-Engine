@@ -24,7 +24,7 @@ let Movie = new Schema({
 
 /* Schema for overall list */
 let MovieList = new Schema({
-    recommendedMovies:  {   type: [Movie], required: true },
+    recommendedMovies:  {   type: [String], required: true },
     favGenre:           {   type: String                },
     AvgRuntime:         {   type: Number                },
     favActor:           {   type: String                },
