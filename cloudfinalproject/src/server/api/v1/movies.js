@@ -104,8 +104,7 @@ module.exports = (app) => {
             + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&vote_count.gte=" +
             avgRate+"&with_cast=" + maxActor.id + "&with_genres=" + maxGenre.id;
             // console.log(url)
-        axios.get(url).then(
-            (list)=> {
+        axios.get(url).then((list)=> {
                 let movies = [];
                 // for (let i = 0; i < 5; i++) {
                 //     movies.push(list.results[i].title);
