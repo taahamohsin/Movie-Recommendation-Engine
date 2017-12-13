@@ -58,7 +58,7 @@ class Movies extends Component{
         const data={movies: this.state.movies};
         $.ajax({
             method:'PUT',
-            url: `/v1/movie/recommend`,
+            url: `/v1/movie/watch`,
             data: data
         }).then(()=>{
             this.props.history.push('/profile')

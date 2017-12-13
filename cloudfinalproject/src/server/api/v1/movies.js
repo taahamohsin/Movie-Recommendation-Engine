@@ -140,7 +140,9 @@ module.exports = (app) => {
                 });
                 let rec=recommend(curMovies);
                 let query= {_id: req.session.user};
-                app.models.User.findOneAndUpdate(query, {$set: {recomMovies: rec, movies: curMovies}});
+                app.models.User.findOneAndUpdate(query, {$set: {recomMovies: rec, movies: curMovies}})
+                    .then(()=>{res.status(201).send({message: "HERE"})}
+                    );
         });
 
 
