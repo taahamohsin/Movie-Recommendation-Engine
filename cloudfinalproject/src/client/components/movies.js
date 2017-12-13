@@ -1,3 +1,5 @@
+'use strict';
+
 import React, {Component} from 'react'
 import { Redirect, withRouter } from 'react-router-dom';
 import Movie from './Movie.js'
@@ -23,6 +25,7 @@ class Movies extends Component{
         this.state={
             movies:[]
         }
+        console.log((this.state.movies))
         this.onSubmit=  this.onSubmit.bind(this);
         this.onAdd  =   this.onAdd.bind(this);
     }    
@@ -45,6 +48,8 @@ class Movies extends Component{
     }
 
     onAdd=(event)=>{
+        console.log(this.state)
+        console.log(this.state.movies)
         event.preventDefault();
         let query=document.getElementById('title').value
         $.ajax({
@@ -52,11 +57,15 @@ class Movies extends Component{
             url:`/v1/movie/${query}`
         }).then(
             (res)=>{
-                // console.log('https://image.tmdb.org/t/p/w342'+res.data.poster_path)
-                // let url='https://image.tmdb.org/t/p/w342'+res.data.poster_path;
+                 let newMovies=this.state.movies;
+               newMovies.push(
+                    {'title':res.data.original_title,'plot':res.data.overview, 'homepage':res.data.homepage, 'duration':res.data.runtime});
+                console.log('BEFORE '+(this.state.movies))
                 this.setState({
-                    movies:[<Movie index={this.state.movies.length} title={res.data.original_title} plot={res.data.overview}/>]
+                    movies:newMovies
                 })
+                console.log('AFTER '+(this.state.movies))
+
         }
         ).fail(
             err=>{
@@ -66,8 +75,14 @@ class Movies extends Component{
         // add to this.state.movies and trigger a re-render
     }
 
-    render(){
-        console.log(this.state);
+    render(){ 
+                console.log(this.state.movies)    
+        let movies = this.state.movies.map((movie, index) => (
+            <Movie key={index} title={movie.title} plot={movie.plot} homepage={movie.homepage} duration={movie.duration}/>
+        ));
+        console.log(this.state.movies)    
+
+
         return(
             <div>
                 <form className="form-inline">
@@ -99,8 +114,7 @@ class Movies extends Component{
                         </div>
                     </div>
                 </form>  
-                {console.log(this.state)}
-                {this.state.movies[0]}       
+                {movies}       
             </div>
         )
     }

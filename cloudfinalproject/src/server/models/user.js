@@ -24,9 +24,7 @@ let User = new Schema({
     'city':         { type: String, default: '' },
     'hash':         { type: String, required: true },
     'salt':         { type: String, required: true },
-    'movies': [
-        { type: Schema.Types.ObjectId, ref: 'MovieList' }
-    ]
+    'movies':       { type: Schema.Types.ObjectId, ref: 'MovieList' }
 });
 
 User.path('username').validate(function(value) {
