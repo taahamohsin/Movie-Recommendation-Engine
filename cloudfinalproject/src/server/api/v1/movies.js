@@ -138,9 +138,16 @@ module.exports = (app) => {
                     axios.get(url).then(
                         (list)=> {
                             let movies = [];
-                            for (let i = 0; i < 5; i++) {
-                                movies.push({title:list.data.results[i].title, score: list.data.results[i].vote_average});
-                                //pull actual data from the list
+                            if (list.data.results.length<5) {
+                                list.data.results.forEach(result=>{
+                                    movies.push({title:result.title, score: result.vote_average});
+                                })
+                            }
+                            else {
+                                for (let i = 0; i < 5; i++) {
+                                    movies.push({title:list.data.results[i].title, score: list.data.results[i].vote_average});
+                                    //pull actual data from the list
+                                }
                             }
                             let r={recommendedMovies: movies, favGenre: maxGenre.genre, AvgRuntime: avgRuntime, favActor: maxActor.name, averageRating: avgRate};
                             console.log(r)
