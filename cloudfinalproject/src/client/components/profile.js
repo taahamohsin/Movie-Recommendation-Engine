@@ -114,13 +114,11 @@ class Profile extends Component {
         // Is the logged in user viewing their own profile
         const isUser = this.props.match.params.username === this.props.user.getUser().username;
         // Build array of games
+        let movies=<tr/>
         if (this.state.user.recomMovies) {
-            let movies =this.state.user.recomMovies.recommendedMovies.map((movie, index) =>{
+            movies =this.state.user.recomMovies.recommendedMovies.map((movie, index) =>{
                 <Movie key={index} movie={movie} index={index}/>
             });
-        }
-        else {
-            let movies = <div/>;
         }
         return <div className="row" style={divStyle}>
             <div className="center-block">
