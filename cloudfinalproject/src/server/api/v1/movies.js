@@ -70,7 +70,7 @@ module.exports = (app) => {
                     actorsFound.push({id: cast[0].id, count: 1})
                     maxActor.name=cast[0].name;
                     maxActor.count=1;
-                    maxActor.id=a.id;
+                    maxActor.id=cast[0].id;
                 }
                 else {
                     actorsFound.forEach(a => {
@@ -91,8 +91,8 @@ module.exports = (app) => {
             }
 
         });
-        let avgRuntime = floor(sumRuntime / countMovies);
-        let avgRate = floor(sumRatings / countMovies);
+        let avgRuntime = Math.floor(sumRuntime / countMovies);
+        let avgRate = Math.floor(sumRatings / countMovies);
         //maxGenre should have the most frequently occuring genre
         //maxActor should have most frequent actor
         //https://api.themoviedb.org/3/
@@ -134,7 +134,7 @@ module.exports = (app) => {
                     movie.genres.forEach((genre)=>{
                         genres.push({id: genre.id, name: genre.name})
                     });
-                    let cur={Title: movie.title, Runtime: runtime, Genres:genres,
+                    let cur={Title: movie.title, Runtime: movie.runtime, Genres:genres,
                         Actors: actors, Rating: movie.vote_average, HomePage: movie.homepage};
                     curMovies.push(cur);
                 });
