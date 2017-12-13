@@ -17,7 +17,8 @@ const tableStyle={
 const Movie = ({ movie, index }) => {
     //const url = movie.homepage;
     return <tr key={index}>
-        <th>{movie}</th>
+        <th>{movie.title}</th>
+        <th>{movie.score}</th>
     </tr>;
 };
 
@@ -28,6 +29,7 @@ class Profile extends Component {
             user: {
                 primary_email: "",
                 movies: [],
+                recomMovies: {recommendedMovies:[]}
             },
             editing:false
 
@@ -114,12 +116,10 @@ class Profile extends Component {
         // Is the logged in user viewing their own profile
         const isUser = this.props.match.params.username === this.props.user.getUser().username;
         // Build array of games
-        let movies=<tr/>
-        if (this.state.user.recomMovies) {
-            movies =this.state.user.recomMovies.recommendedMovies.map((movie, index) =>{
+        console.log(this.state.user.recomMovies.recommendedMovies);
+        let movies =this.state.user.recomMovies.recommendedMovies.map((movie, index) =>{
                 <Movie key={index} movie={movie} index={index}/>
-            });
-        }
+        });
         return <div className="row" style={divStyle}>
             <div className="center-block">
                 <p id="errorMsg" className="bg-danger"/>

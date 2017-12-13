@@ -21,10 +21,13 @@ let Movie = new Schema({
     Rating:    {   type: Number    },
     HomePage:   {   type: String  }
 });
-
+let RecomMovie=new Schema({
+    title:      { type: String},
+    score:      { type: Number}
+})
 /* Schema for overall list */
 let MovieList = new Schema({
-    recommendedMovies:  {   type: [String]              },
+    recommendedMovies:  {   type: [RecomMovie]              },
     favGenre:           {   type: String                },
     AvgRuntime:         {   type: Number                },
     favActor:           {   type: String                },

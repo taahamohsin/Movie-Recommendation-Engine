@@ -139,7 +139,7 @@ module.exports = (app) => {
                         (list)=> {
                             let movies = [];
                             for (let i = 0; i < 5; i++) {
-                                movies.push(list.data.results[i].title);
+                                movies.push({title:list.data.results[i].title, score: list.data.results[i].vote_average});
                                 //pull actual data from the list
                             }
                             let r={recommendedMovies: movies, favGenre: maxGenre.genre, AvgRuntime: avgRuntime, favActor: maxActor.name, averageRating: avgRate};
